@@ -68,6 +68,7 @@ df &lt;- read.csv(&quot;synthetic_dataset.csv&quot;)
 
 #### Compute DAH30
 compute_dah30(df)
+  
 Full worked examples and test cases are included in this repository.
 
 ### WHAT OUR RESEARCH SHOWS
