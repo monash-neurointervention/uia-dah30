@@ -105,13 +105,4 @@ For researchers and systems
 - Suitable for registries and large datasets
 - Reduces bias compared to patient-reported outcomes 
 
-### COLLABORATION
-
-We welcome:
-- External validation studies
-- Registry implementation
-- Methodological extensions
-
-For collaboration or implementation enquiries:  
-Associate Professor Ronil V. Chandra  
-Monash Neurointervention  
+### [COLLABORATION](https://monash-neurointervention.github.io/collaboration)
