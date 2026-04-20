@@ -8,8 +8,10 @@ It combines survival, time in hospital, and recovery into a single, patient-cent
 
 ## WHY DAH30 MATTERS
 Most medical outcomes focus on technical success or complications.
-But for patients, an important question is often:
-“How quickly will I get home and recover?”
+
+But for patients, an important question is often:  
+*“How quickly will I get home and recover?”*
+
 DAH30 answers this directly.
 
 It reflects:
