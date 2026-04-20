@@ -85,7 +85,7 @@ DAH30 has been evaluated in 614 unruptured brain aneurysm treatments at a majo
 
 Overall, DAH30 provides a simple and reliable way to measure real-world recovery after unruptured brain aneurysm treatment.
 
-### Reference
+### REFERENCE
 Chandra RV, Taylor F, Gall S, et al.  
 30-day home time as a patient-centered outcome after treatment of unruptured intracranial aneurysms  
 J NeuroInterventional Surgery, 2026  
