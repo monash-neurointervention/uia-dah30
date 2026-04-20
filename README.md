@@ -62,14 +62,15 @@ Example 3 (Planned second procedure)
 
 ### QUICK START (FOR RESEARCHERS)
 
-R
-#### Load example dataset
-df &lt;- read.csv(&quot;synthetic_dataset.csv&quot;)
+Use the following formatted excel sheet and practice running through this rmarkdown document.  
+[minimum_dataset.xlsx](minimum_dataset.xlsx)  
+[workbook_minimum.Rmd](workbook_minimum.Rmd)  
 
-#### Compute DAH30
-compute_dah30(df)
-  
-Full worked examples and test cases are included in this repository.
+The code should create the following output file in your working directory with calculated DAH30 scores.  
+[30days.xlsx](30days.xlsx)
+
+If the above steps work for you, you can try editing the minimum_dataset to include your own data with the same formatting.  
+For interrogatability, the output 30days.xlsx will show you which date intervals have been subtracted from the 30 post-op days under the column "merged_intervals", as well as counts for those days under "overlap_days".
 
 ### WHAT OUR RESEARCH SHOWS
 
@@ -86,7 +87,7 @@ Overall, DAH30 provides a simple and reliable way to measure real-world recovery
 Chandra RV, Taylor F, Gall S, et al.  
 30-day home time as a patient-centered outcome after treatment of unruptured intracranial aneurysms  
 J NeuroInterventional Surgery, 2026  
-https://doi.org/10.1136/jnis-2025-024914
+[https://doi.org/10.1136/jnis-2025-024914](https://doi.org/10.1136/jnis-2025-024914)
 
 ### WHY THIS METRIC IS USEFUL
 For patients
