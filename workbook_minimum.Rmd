@@ -1,0 +1,139 @@
+---
+title: "DAH30"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE,
+                      error = TRUE)
+```
+
+Last modified: `r format(Sys.time(), '%d %B, %Y')`
+
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(readxl)
+library(labelled)
+library(openxlsx)
+
+# if you don't have any of the above packages installed, run the line below.
+# install.packages(c("tidyverse", "lubridate", "readxl", "labelled", "openxlsx))
+```
+
+### 30-Day Home Time as a Patient-Centered Outcome
+
+```{r load data}
+data <- read_excel("minimum_dataset.xlsx", 
+    col_types = c("text", "date", "date", 
+        "date", "date", "date", "date", "date", 
+        "date", "date", "date", "date", "date", 
+        "date", "date", "date", "date", "date", 
+        "date", "date", "date", "date", "date", 
+        "text")) %>%
+  janitor::clean_names() %>%
+  group_by(patient_id) %>%
+  mutate(
+    days_30_interval = interval(procedure_date, procedure_date + days(30)),
+    days_30_readmission_interval_1 = interval(readmission_admission_date_1, readmission_discharge_date_1),
+    days_30_readmission_interval_2 = interval(readmission_admission_date_2, readmission_discharge_date_2),
+    days_30_readmission_interval_3 = interval(readmission_admission_date_3, readmission_discharge_date_3),
+    days_30_readmission_interval_4 = interval(readmission_admission_date_4, readmission_discharge_date_4),
+    days_30_readmission_interval_5 = interval(readmission_admission_date_5, readmission_discharge_date_5),
+    days_30_rehab_interval_1 = interval(rehab_admission_date_1, rehab_discharge_date_1),
+    days_30_rehab_interval_2 = interval(rehab_admission_date_2, rehab_discharge_date_2),
+    days_30_rehab_interval_3 = interval(rehab_admission_date_3, rehab_discharge_date_3),
+    days_30_rehab_interval_4 = interval(rehab_admission_date_4, rehab_discharge_date_4),
+    days_30_rehab_interval_5 = interval(rehab_admission_date_5, rehab_discharge_date_5),
+    days_30_postop_interval = interval(procedure_date, procedure_discharge_date)) %>% 
+   pivot_longer(
+    cols = starts_with("days_30_readmission_interval_"),
+    names_to = "readmission_number",
+    names_prefix = "days_30_readmission_interval_",
+    values_to = "readmission_intervals",
+    values_drop_na = TRUE
+  ) %>%
+  nest(readmission = c(readmission_number, readmission_intervals)) %>%
+  pivot_longer(
+    cols = starts_with("days_30_rehab_interval_"),
+    names_to = "rehab_number",
+    names_prefix = "days_30_rehab_interval_",
+    values_to = "rehab_intervals",
+    values_drop_na = TRUE
+  ) %>%
+  nest(rehab = c(rehab_number, rehab_intervals)) %>%
+  mutate(
+    total_readmission = map_dbl(readmission, nrow),
+    readmissions_intervals = map(readmission, ~ pull(.x, readmission_intervals)),
+    total_rehab = map_dbl(rehab, nrow),
+    rehab_intervals = map(rehab, ~ pull(.x, rehab_intervals))) %>%
+  ungroup() %>%
+  mutate(
+    intervals_to_subtract = pmap(
+      select(., rehab_intervals, days_30_postop_interval, readmissions_intervals),
+      function(...) {c(...) %>% na.omit()}),
+    merged_intervals = map(intervals_to_subtract, function(intervals) {
+      if(length(intervals) == 0) return(NULL)
+      
+      # Remove NULL and NA values
+      valid_intervals <- intervals[!sapply(intervals, is.null) & !sapply(intervals, is.na)]
+      if(length(valid_intervals) == 0) return(NULL)
+      
+      # Sort intervals by start time
+      sorted <- valid_intervals[order(sapply(valid_intervals, function(x) {
+        tryCatch(int_start(x), error = function(e) NULL)
+      }))]
+      sorted <- sorted[!sapply(sorted, is.null)]
+      
+      # Initialize result with first interval
+      result <- sorted[1]
+      if(length(sorted) == 1) return(result)
+      
+      # Merge overlapping intervals
+      for(i in 2:length(sorted)) {
+        current <- sorted[i]
+        last <- result[length(result)]
+        
+        if(tryCatch(int_overlaps(last, current), error = function(e) FALSE)) {
+          # Merge overlapping intervals
+          result[length(result)] <- interval(
+            min(int_start(last), int_start(current)),
+            max(int_end(last), int_end(current))
+          )
+        } else {
+          # Add non-overlapping interval
+          result <- c(result, current)
+        }
+      }
+      result
+    }),
+    overlap_days = map2_dbl(days_30_interval, merged_intervals, function(main, others) {
+      if(is.null(others)) return(0)
+      sum(sapply(others, function(x) {
+        tryCatch(time_length(intersect(main, x), unit = "days"), error = function(e) 0)
+      }), na.rm = T)}),
+    days_30_home = case_when(
+      death_within_30_days == "TRUE" ~ 0,
+      .default = 30 - overlap_days) # 30DHT = 0 if death
+  ) 
+```
+
+```{r 30_day_home_time}
+data %>% 
+  summarise(
+    n = n(),
+    mean = mean(days_30_home), 
+    median = median(days_30_home), 
+    q1 = quantile(days_30_home, probs = 0.25),  
+    q3 = quantile(days_30_home, probs = 0.75))
+```
+
+```{r save_your_data}
+data %>% 
+  select(-c(rehab, readmission, intervals_to_subtract)) %>%
+  write.xlsx("30days.xlsx")
+```

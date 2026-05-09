@@ -1,36 +1,34 @@
+---
+title: ""
+output:
+  github_document: default
+  html_notebook: default
+editor_options: 
+  chunk_output_type: inline
+---
 
 ## Days Alive and at Home (DAHxx)
 
-A simple, patient-centred way to measure recovery after treatment or
-acute illness.
+A simple, patient-centred way to measure recovery after treatment or acute illness.
 
-DAH30 is the number of days a patient is alive and at home during the
-first 30 days after an index health event. DAH90, DAH180, and DAH365
-follow the same principle but use longer follow-up periods.
+DAH30 is the number of days a patient is alive and at home during the first 30 days after an index health event. DAH90, DAH180, and DAH365 follow the same principle but use longer follow-up periods.
 
-In the following, DAH30 is used as the example, but the same definitions
-can be applied to longer follow-up periods.
+In the following, DAH30 is used as the example, but the same definitions can be applied to longer follow-up periods.
 
 Depending on the clinical context, the index event may be:
 
 - a treatment or procedure, or
 - an index acute admission
 
-DAH combines survival, time spent in hospital or other non-home care,
-and recovery into a single, *patient-centred* outcome.
+DAH combines survival, time spent in hospital or other non-home care, and recovery into a single, *patient-centred* outcome.
 
-Building on prior work, our group is expanding the DAH framework across
-major neurovascular conditions, including subarachnoid haemorrhage,
-large vessel occlusion stroke, and intracranial aneurysms.
+Building on prior work, our group is expanding the DAH framework across major neurovascular conditions, including subarachnoid haemorrhage, large vessel occlusion stroke, and intracranial aneurysms. 
 
-The aim is to establish DAH as a scalable, patient-centred outcome
-measure and to support international validation, benchmarking, and
-adoption in clinical research and practice.
+The aim is to establish DAH as a scalable, patient-centred outcome measure and to support international validation, benchmarking, and adoption in clinical research and practice.
 
 ### Why DAH matters
 
-Most medical outcomes focus on technical success, complications, or
-mortality.
+Most medical outcomes focus on technical success, complications, or mortality.
 
 But for patients, an important question is often:
 
@@ -45,22 +43,17 @@ It reflects:
 - complications and readmissions
 - survival during the follow-up window
 
-DAH aligns clinical outcome measurement with something meaningful to
-patients: *time at home*.
+DAH aligns clinical outcome measurement with something meaningful to patients: *time at home*.
 
-DAH is already finding use as an outcome measure in surgical cohorts and
-healthcare systems, and is well suited to real-world data, linked
-administrative datasets, clinical trials, and clinical registries.
+DAH is already finding use as an outcome measure in surgical cohorts and healthcare systems, and is well suited to real-world data, linked administrative datasets, clinical trials, and clinical registries.
 
 ### How DAH30 is defined
 
 #### Core definition
 
-**DAH30 = Number of days alive and at home within 30 days after the
-index event**
+**DAH30 = Number of days alive and at home within 30 days after the index event**
 
-This repository uses a midnight-counting convention: each midnight spent
-in hospital or other qualifying non-home care reduces DAH30 by 1 day.
+This repository uses a midnight-counting convention: each midnight spent in hospital or other qualifying non-home care reduces DAH30 by 1 day.
 
 ### Choosing the index event
 
@@ -68,18 +61,14 @@ The index event should be defined explicitly for each study.
 
 Common approaches include:
 
-- **Procedure-based anchor:** Day 0 is the date of treatment or
-  procedure
-- **Admission-based anchor:** Day 0 is the date of the index acute
-  admission
+- **Procedure-based anchor:** Day 0 is the date of treatment or procedure
+- **Admission-based anchor:** Day 0 is the date of the index acute admission
 
-The choice of anchor should match the clinical question and dataset
-structure.
+The choice of anchor should match the clinical question and dataset structure.
 
 ### How it is calculated
 
-Start with 30 days, then subtract each midnight spent in hospital or
-other qualifying non-home care during the follow-up window.
+Start with 30 days, then subtract each midnight spent in hospital or other qualifying non-home care during the follow-up window.
 
 Qualifying non-home care may include:
 
@@ -92,17 +81,11 @@ Qualifying non-home care may include:
 
 - Day 0 is the index event date
 - Days before the index event are not included
-- DAH30 is reduced by each midnight spent in hospital or other
-  qualifying non-home care
-- Same-day admissions do not reduce DAH30 if the patient does not spend
-  a midnight away from home
-- Admissions that cross midnight reduce DAH30, whether planned or
-  unplanned
-- Emergency department visits without admission do not reduce DAH30 if
-  the patient does not spend a midnight away from home
-- Transfer to a non-home institution, such as rehabilitation, hospice,
-  or long-term care, reduces DAH30 when it involves one or more
-  midnights away from home
+- DAH30 is reduced by each midnight spent in hospital or other qualifying non-home care
+- Same-day admissions do not reduce DAH30 if the patient does not spend a midnight away from home
+- Admissions that cross midnight reduce DAH30, whether planned or unplanned
+- Emergency department visits without admission do not reduce DAH30 if the patient does not spend a midnight away from home
+- Transfer to a non-home institution, such as rehabilitation, hospice, or long-term care, reduces DAH30 when it involves one or more midnights away from home
 - Death within 30 days results in DAH30 = 0
 
 ### Simple formula
@@ -128,8 +111,7 @@ In Example 5, Day 0 is the date of the index acute admission.
 
 - Index date: `01-01-2026`
 - Discharge date: `06-01-2026`
-- Index admission midnights not at home: `01-01-2026` to `05-01-2026` =
-  5
+- Index admission midnights not at home: `01-01-2026` to `05-01-2026` = 5
 - Unplanned readmission: `15-01-2026` to `20-01-2026`
 - Readmission midnights not at home: `15-01-2026` to `19-01-2026` = 5
 - Total midnights not at home: 10
@@ -145,8 +127,7 @@ In Example 5, Day 0 is the date of the index acute admission.
 - Total midnights not at home: 3
 - **DAH30 = 30 − 3 = 27**
 
-Planned admissions reduce DAH30 if they cross midnight, because the
-patient is not at home.
+Planned admissions reduce DAH30 if they cross midnight, because the patient is not at home.
 
 #### Example 4: same-day discharge after uncomplicated procedure
 
@@ -156,8 +137,7 @@ patient is not at home.
 - No readmissions
 - **DAH30 = 30 − 0 = 30**
 
-Same-day discharge does not reduce DAH30 if the patient does not spend a
-midnight away from home.
+Same-day discharge does not reduce DAH30 if the patient does not spend a midnight away from home.
 
 #### Example 5: acute admission pathway
 
@@ -166,77 +146,57 @@ midnight away from home.
 - Acute hospital midnights not at home: `01-01-2026` to `07-01-2026` = 7
 - Rehabilitation admission date: `08-01-2026`
 - Rehabilitation discharge date: `22-01-2026`
-- Rehabilitation midnights not at home: `08-01-2026` to `21-01-2026` =
-  14
+- Rehabilitation midnights not at home: `08-01-2026` to `21-01-2026` = 14
 - Total midnights not at home: 21
 - No readmissions
 - **DAH30 = 30 − 21 = 9**
 
 ### Expanded models: DAH90, DAH180, DAH365
 
-Some procedures and diagnoses may be better assessed using a longer
-follow-up window.
+Some procedures and diagnoses may be better assessed using a longer follow-up window.
 
-For example, patients with prolonged hospital and rehabilitation stays
-after aneurysmal subarachnoid haemorrhage may have very low DAH30
-values, while DAH365 may provide a more meaningful representation of
-longer-term recovery.
+For example, patients with prolonged hospital and rehabilitation stays after aneurysmal subarachnoid haemorrhage may have very low DAH30 values, while DAH365 may provide a more meaningful representation of longer-term recovery.
 
 The underlying logic is the same as for DAH30:
 
 **DAHxx = xx − qualifying non-home midnights**
 
-The follow-up window changes, but the same principles apply. Template
-workbooks for DAH90, DAH180, and DAH365 are linked below.
+The follow-up window changes, but the same principles apply. Template workbooks for DAH90, DAH180, and DAH365 are linked below.
 
 ### Quick start for researchers
 
-Use the formatted example dataset and R workflow to calculate DAH in a
-reproducible way.
+Use the formatted example dataset and R workflow to calculate DAH in a reproducible way.
 
-The reference implementation currently demonstrates a minimum working
-example. In practice, users should define:
+The reference implementation currently demonstrates a minimum working example. In practice, users should define:
 
-- the DAH window used in their study, such as DAH30, DAH90, DAH180, or
-  DAH365
+- the DAH window used in their study, such as DAH30, DAH90, DAH180, or DAH365
 - the index event used in their study
 - which non-home episodes are counted
 - how planned and unplanned admissions are recorded
 - how transfer episodes and rehabilitation stays are handled
 - how death within the follow-up window is handled
 
-Researchers applying the code to real-world data should map their local
-dataset to the required structure before running the pipeline.
+Researchers applying the code to real-world data should map their local dataset to the required structure before running the pipeline.
 
 ### What this repository provides, and aims to provide
 
-- a transparent reference implementation of DAH30, DAH90, DAH180, and
-  DAH365 for planned treatment, acute admissions, registries, and
-  clinical trials
-- an assumptions sheet outlining the repository rules (in progress,
-  check back early June)
-- a synthetic example dataset with common registry challenges (in
-  progress)
+- a transparent reference implementation of DAH30, DAH90, DAH180, and DAH365 for planned treatment, acute admissions, registries, and clinical trials
+- an assumptions sheet outlining the repository rules (in progress, check back early June)
+- a synthetic example dataset with common registry challenges (in progress)
 - a reproducible R-based workflow (in progress)
-- documentation for adapting the method to registry and linked
-  administrative datasets (in progress)
-- practical guidance on registry implementation, including common
-  pitfalls (in progress)
+- documentation for adapting the method to registry and linked administrative datasets (in progress)
+- practical guidance on registry implementation, including common pitfalls (in progress)
 
 <!-- ### QUICK START (FOR RESEARCHERS) -->
 
 <!-- Use the following formatted excel sheet and practice running through this rmarkdown document.   -->
-
 <!-- [minimum_dataset.xlsx](minimum_dataset.xlsx)   -->
-
 <!-- [workbook_minimum.Rmd](workbook_minimum.Rmd)   -->
 
 <!-- The code should create the following output file in your working directory with calculated DAH30 scores.   -->
-
 <!-- [30days.xlsx](30days.xlsx) -->
 
 <!-- If the above steps work for you, you can try editing the minimum_dataset to include your own data with the same formatting.   -->
-
 <!-- For interrogatability, the output 30days.xlsx will show you which date intervals have been subtracted from the 30 post-op days under the column "merged_intervals", as well as counts for those days under "overlap_days". -->
 
 <!-- ### WHAT OUR RESEARCH SHOWS -->
@@ -244,47 +204,33 @@ dataset to the required structure before running the pipeline.
 <!-- DAH30 has been evaluated in 614 unruptured brain aneurysm treatments at a major neurovascular centre in Melbourne (Monash Health). -->
 
 <!-- - The typical patient spent 27 out of 30 days at home after treatment -->
-
 <!-- - Most patients were discharged home quickly and remained at home -->
-
 <!-- - Patients undergoing endovascular treatment spent more time at home than those undergoing surgery, reflecting the less invasive nature and faster recovery -->
-
 <!-- - Longer or more complex procedures were associated with slower recovery -->
-
 <!-- - Patient factors such as frailty and overall health also influenced time at home -->
 
 <!-- Overall, DAH30 provides a simple and reliable way to measure real-world recovery after unruptured brain aneurysm treatment. -->
 
 <!-- ### REFERENCE -->
-
 <!-- Chandra RV, Taylor F, Gall S, et al.   -->
-
 <!-- 30-day home time as a patient-centered outcome after treatment of unruptured intracranial aneurysms   -->
-
 <!-- J NeuroInterventional Surgery, 2026   -->
-
 <!-- [https://doi.org/10.1136/jnis-2025-024914](https://doi.org/10.1136/jnis-2025-024914) -->
 
 <!-- ### WHY THIS METRIC IS USEFUL -->
-
 <!-- For patients -->
-
 <!-- - Clear understanding of recovery -->
-
 <!-- - Helps guide expectations -->
 
 <!-- For clinicians -->
 
 <!-- - Simple and objective -->
-
 <!-- - Reflects real recovery, not just technical success -->
 
 <!-- For researchers and systems -->
 
 <!-- - Can be calculated from administrative data -->
-
 <!-- - Suitable for registries and large datasets -->
-
 <!-- - Reduces bias compared to patient-reported outcomes -->
 
 <!-- ### [COLLABORATION](https://monash-neurointervention.github.io/collaboration) -->
